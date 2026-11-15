@@ -310,9 +310,11 @@ function renderPosts(){
   });
 }
 function setTab(name){
+  // Switch the visible panel without changing the URL hash.
+  // Updating location.hash triggers the browser's anchor scrolling,
+  // which can unexpectedly jump the visitor down the page.
   document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===name));
   document.querySelectorAll("[data-tab]").forEach(a=>a.classList.toggle("active",a.dataset.tab===name));
-  location.hash=name;
 }
 document.querySelectorAll("[data-tab]").forEach(el=>el.addEventListener("click",e=>{e.preventDefault();setTab(el.dataset.tab);}));
 if(location.hash==="#adventures")setTab("adventures");
