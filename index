@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ira &amp; Larissa's Little Adventures</title>
+<style>
+  :root{
+    --ink:#263746; --muted:#667782; --cream:#fffaf1; --paper:#ffffff;
+    --coral:#ef8f78; --yellow:#f4d77a; --teal:#8fc8bd; --lavender:#b9b1dc;
+    --line:#eee8dc; --shadow:0 12px 34px rgba(48,61,68,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family: "Avenir Next",Avenir, "Segoe UI",sans-serif;line-height:1.5}
+  .site{max-width:1120px;margin:auto;padding:28px 22px 56px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:22px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.02em}
+  .brand-mark{width:46px;height:46px;border-radius:15px;background:var(--yellow);display:grid;place-items:center;font-size:24px}
+  .brand small{display:block;color:var(--muted);font-weight:500;letter-spacing:0;font-size:12px}
+  nav{display:flex;gap:8px;flex-wrap:wrap}
+  nav a{color:var(--ink);text-decoration:none;padding:10px 15px;border-radius:99px;font-size:14px;font-weight:700}
+  nav a.active,nav a:hover{background:#fff;box-shadow:0 3px 14px rgba(48,61,68,.07)}
+  .hero{background:linear-gradient(120deg,#f8df9b 0%,#f6c9b8 54%,#c9e4dc 100%);border-radius:28px;padding:36px 38px;margin-bottom:25px;position:relative;overflow:hidden}
+  .hero:after{content:"✦";position:absolute;right:7%;top:8%;font-size:92px;color:rgba(255,255,255,.55);transform:rotate(15deg)}
+  .eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:800;color:#675d52}
+  h1{font-family:Georgia,serif;font-size:clamp(34px,5vw,54px);line-height:1.05;margin:10px 0 12px;font-weight:500}
+  .hero p{max-width:590px;margin:0;color:#46565c;font-size:16px}
+  .hero-note{margin-top:18px;font-size:12px;color:#536268}
+  .tabs{display:flex;gap:10px;margin:0 0 18px}
+  .tab{border:0;background:transparent;color:var(--muted);padding:12px 18px;border-radius:14px;font:700 14px inherit;cursor:pointer}
+  .tab.active{background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+  .panel{display:none}.panel.active{display:block}
+  .section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:10px 0 17px}
+  h2{font-family:Georgia,serif;font-size:30px;font-weight:500;margin:0}
+  .section-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
+  .calendar-card,.blog-card,.info-card{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+  .calendar-card{padding:22px}
+  .cal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px;gap:10px}
+  .cal-title{font:500 24px Georgia,serif}
+  .cal-actions{display:flex;gap:8px}
+  .cal-actions button{border:1px solid var(--line);background:#fff;border-radius:11px;width:38px;height:38px;cursor:pointer;font-size:18px;color:var(--ink)}
+  .weekdays,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
+  .weekdays div{text-align:center;color:var(--muted);font-size:11px;font-weight:800;padding:7px 0;text-transform:uppercase;letter-spacing:.06em}
+  .day{min-height:94px;border:1px solid #f0ece5;border-radius:13px;padding:8px;background:#fff;position:relative}
+  .day.outside{background:#fcfaf6;color:#b7b4ad}
+  .day.today{border:2px solid var(--coral)}
+  .day-num{font-size:12px;font-weight:800}
+  .event-dot{display:block;margin-top:7px;padding:4px 6px;border-radius:7px;background:#e3f1ed;color:#345d56;font-size:10px;line-height:1.25;overflow-wrap:anywhere}
+  .event-dot.coral{background:#fde9e3;color:#8a4c3d}
+  .event-dot.lavender{background:#eeeafb;color:#514a7c}
+  .event-dot.yellow{background:#fbf3d7;color:#705d24}
+
+  .calendar-legend{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 14px;padding:0 2px;color:var(--muted);font-size:12px}
+  .legend-item{display:flex;align-items:center;gap:6px}
+  .legend-swatch{width:11px;height:11px;border-radius:4px;display:inline-block}
+  .legend-swatch.confirmed{background:#efb3a4}
+  .legend-swatch.suggested{background:#b9b1dc}
+  .below-calendar{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  .info-card{padding:18px 20px;box-shadow:none}
+  .info-card h3{font:500 20px Georgia,serif;margin:0 0 10px}
+  .event-row{padding:10px 0;border-top:1px solid var(--line);display:flex;gap:12px;align-items:flex-start}
+  .event-date{min-width:48px;text-align:center;background:#fff3d2;border-radius:10px;padding:6px 4px;font-size:11px;font-weight:800}
+  .event-row strong{display:block;font-size:13px}
+  .event-row small{color:var(--muted);font-size:12px}
+  .empty{color:var(--muted);font-size:13px;padding:8px 0}
+  .blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .ideas-intro{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px 20px;margin-bottom:16px;display:flex;flex-direction:column;gap:4px}
+  .ideas-intro strong{font:500 20px Georgia,serif}
+  .ideas-intro span,.ideas-footnote{font-size:13px;color:var(--muted)}
+  .ideas-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .idea-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
+  .idea-icon{width:44px;height:44px;border-radius:14px;background:#fbf3d7;display:grid;place-items:center;font-size:23px}
+  .idea-card:nth-child(3n+2) .idea-icon{background:#e3f1ed}
+  .idea-card:nth-child(3n) .idea-icon{background:#fde9e3}
+  .idea-card h3{font:500 20px Georgia,serif;margin:2px 0}
+  .idea-card p{font-size:13px;color:var(--muted);margin:0}
+  .idea-meta{font-size:11px;font-weight:700;color:#667782;margin-top:auto;padding-top:5px}
+  .idea-tag{display:inline-block;background:#f5f1e9;border-radius:99px;padding:5px 9px;font-size:10px;font-weight:800;letter-spacing:.03em;width:max-content}
+  .ideas-footnote{margin:15px 2px 0}
+  @media(max-width:760px){.ideas-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.ideas-grid{grid-template-columns:1fr}}
+  .blog-card{overflow:hidden;box-shadow:none}
+  .blog-photo{height:185px;background:linear-gradient(135deg,#f6dca0,#f2b8a8 55%,#b9d9d0);display:grid;place-items:center;color:#695c4c;text-align:center;padding:20px;font-size:13px}
+  .blog-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .blog-copy{padding:17px}
+  .blog-copy time{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800}
+  .blog-copy h3{font:500 21px Georgia,serif;margin:7px 0}
+  .blog-copy p{font-size:13px;color:var(--muted);margin:0}
+  .footer{margin-top:28px;text-align:center;color:var(--muted);font-size:11px}
+  .privacy{display:inline-block;margin-top:8px;padding:7px 11px;border-radius:99px;background:#f0eee8}
+  @media(max-width:760px){
+    .site{padding:16px 12px 38px}header{align-items:flex-start;flex-direction:column}
+    .hero{padding:28px 23px}.hero:after{right:2%;font-size:65px}
+    .calendar-card{padding:12px}.weekdays,.days{gap:3px}.day{min-height:72px;padding:5px 4px;border-radius:8px}
+    .event-dot{font-size:8px;padding:3px}.below-calendar{grid-template-columns:1fr}
+    .blog-grid{grid-template-columns:1fr}.blog-photo{height:210px}
+  }
+
+  @media(max-width:600px){
+    .site{padding:14px 10px 30px}
+    header{gap:10px}
+    nav{width:100%;gap:4px}
+    nav a{padding:8px 10px;font-size:12px}
+    .hero{padding:25px 19px;border-radius:22px}
+    .hero p{font-size:14px;max-width:100%}
+    .tabs{gap:5px;flex-wrap:wrap}
+    .tab{padding:9px 10px;font-size:12px}
+    h2{font-size:25px}
+    .section-head{align-items:flex-start}
+    .calendar-card{padding:8px;border-radius:16px}
+    .weekdays,.days{gap:2px}
+    .weekdays div{font-size:9px;padding:5px 0}
+    .day{min-height:66px;padding:4px 3px;border-radius:7px;min-width:0}
+    .day-num{font-size:10px}
+    .event-dot{font-size:8px;padding:3px 2px;margin-top:4px;line-height:1.15;overflow-wrap:anywhere}
+    .cal-title{font-size:19px}
+    .cal-actions button{width:34px;height:34px}
+    .calendar-legend{gap:8px;font-size:10px}
+    .below-calendar{grid-template-columns:1fr;gap:10px}
+    .info-card{padding:15px}
+    .ideas-grid{grid-template-columns:1fr}
+    .blog-grid{grid-template-columns:1fr}
+    .blog-photo{height:210px}
+  }
+
+</style>
+</head>
+<body>
+<div class="site">
+  <header>
+    <div class="brand"><div class="brand-mark">☀</div><div>IRA &amp; LARISSA<small>little outings • big memories</small></div></div>
+    <nav><a href="#calendar" class="active" data-tab="calendar">Calendar</a><a href="#ideas" data-tab="ideas">Outing Ideas</a><a href="#adventures" data-tab="adventures">Our Adventures</a></nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Ira + Larissa • Big Sister Adventures</div>
+    <h1>Little adventures,<br>big memories!</h1>
+    <p>Welcome to Ira and Larissa’s special place to make plans, dream up fun outings, and remember all the little moments along the way.</p>
+    <div class="hero-note">A shared space for ideas, discoveries, creativity, and lots of smiles. ☀️</div>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="calendar">📅 Our Calendar</button>
+    <button class="tab" data-tab="ideas">💡 Potential Outings</button>
+    <button class="tab" data-tab="adventures">📷 Our Adventures</button>
+  </div>
+
+  <main>
+    <section id="calendar" class="panel active">
+      <div class="section-head"><div><h2>Ira &amp; Larissa’s Calendar</h2><p>See what we have planned together. Outings will appear here once a date is confirmed.</p></div></div>
+      <div class="calendar-legend" aria-label="Calendar color key">
+        <span class="legend-item"><span class="legend-swatch confirmed"></span> Confirmed outing</span>
+        <span class="legend-item"><span class="legend-swatch suggested"></span> Suggested / unconfirmed</span>
+      </div>
+      <div class="calendar-card">
+        <div class="cal-top"><div class="cal-title" id="monthTitle"></div><div class="cal-actions"><button id="prev" aria-label="Previous month">‹</button><button id="next" aria-label="Next month">›</button></div></div>
+        <div class="weekdays"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+        <div class="days" id="calendarDays"></div>
+      </div>
+      <div class="below-calendar">
+        <div class="info-card"><h3>Coming up</h3><div id="upcomingEvents"></div></div>
+        <div class="info-card"><h3>Potential outings</h3><p class="empty">Ideas we're considering — dates and plans are not confirmed yet.</p><div id="potentialEvents"></div></div>
+      </div>
+    </section>
+
+    <section id="ideas" class="panel">
+      <div class="section-head"><div><h2>Potential Outings</h2><p>Ideas for Ira and Larissa to choose from — nothing is booked yet, and we can always change our minds!</p></div></div>
+      <div class="ideas-intro">
+        <strong>What sounds fun?</strong>
+        <span>Ira and her family can browse these ideas and let Larissa know which ones they’d enjoy. We’ll choose dates and details together.</span>
+      </div>
+      <div class="ideas-grid" id="ideasGrid"></div>
+      <p class="ideas-footnote">These are just starting points. We can keep outings simple, local, and low-cost — the best part is spending time together. 💛</p>
+    </section>
+
+    <section id="adventures" class="panel">
+      <div class="section-head"><div><h2>Ira &amp; Larissa’s Adventures</h2><p>A little photo journal of the places we explore, things we make, and memories we collect.</p></div></div>
+      <div class="blog-grid" id="blogGrid"></div>
+    </section>
+  </main>
+  <div class="footer">Made with sunshine for Ira &amp; Larissa and all their little adventures. <div class="privacy">Shared with family • Please keep photos and details private</div></div>
+</div>
+
+<script>
+/*
+  QUICK EDIT GUIDE
+  1) Add outings inside the events array. Dates must use YYYY-MM-DD.
+  2) Add photo stories inside the posts array.
+  3) Upload photos to HubSpot Files, copy each public file URL, and paste it into image.
+  4) This is a view-only page. Changes are made by editing and republishing this code.
+*/
+const events = [
+  {
+    date:"2026-11-21",
+    title:"Home Depot Kids Workshop - Christmas Car Ornament",
+    time:"9:00 AM",
+    place:"Home Depot (Brea)",
+    note:"Activities and crafts, then breakfast!",
+    color:"coral"
+  },
+  {
+    date:"2026-12-12",
+    title:"BBBS Holiday Match Party",
+    time:"11:00 AM - 2:00 PM",
+    place:"Dave & Buster's (Irvine)",
+    note:"Festive celebration filled with food, games, prizes, crafts, and plenty of cheer.",
+    color:"lavender"
+  }
+];
+
+const posts = [
+  // Add Ira and Larissa's photo memories here after each outing:
+  // { date:"November 21, 2026", title:"Our first outing", text:"We explored, made something fun, and enjoyed a special day together.", image:"PASTE_HUBSPOT_IMAGE_URL_HERE" }
+];
+
+const outingIdeas = [
+  { icon:"🎨", title:"Craft & Create", tag:"Creative time", description:"Make greeting cards, decorate bookmarks, paint rocks, or try a simple seasonal craft together.", cost:"Low-cost • Supplies can be simple" },
+  { icon:"🌳", title:"Park Picnic & Play", tag:"Fresh air", description:"Bring snacks from home, play on the playground, blow bubbles, or make up a little nature scavenger hunt.", cost:"Free • Bring a picnic blanket" },
+  { icon:"📚", title:"Library Adventure", tag:"Explore & learn", description:"Visit the library, choose a few books, look for a children’s activity, or enjoy storytime if one is scheduled.", cost:"Free • Check the library calendar" },
+  { icon:"🍓", title:"Farmers Market Stroll", tag:"Little discoveries", description:"Look at colorful fruits and flowers, listen to music, and let Ira choose one small treat if she’d like.", cost:"Free to browse • Optional small treat" },
+  { icon:"🍂", title:"Nature Walk & Treasure Hunt", tag:"Outdoor fun", description:"Search for interesting leaves, flowers, birds, and tiny details. Take photos of favorite discoveries.", cost:"Free • A neighborhood walk works too" },
+  { icon:"🧩", title:"Game & Story Afternoon", tag:"Cozy day", description:"Play a board game, make up a story, do a puzzle, or bring a favorite game to share.", cost:"Free • At home or another family-approved spot" }
+];
+
+let shown = new Date(); shown.setDate(1);
+const monthTitle = document.getElementById("monthTitle");
+const calendarDays = document.getElementById("calendarDays");
+const upcomingEvents = document.getElementById("upcomingEvents");
+const potentialEvents = document.getElementById("potentialEvents");
+
+function renderCalendar(){
+  const year=shown.getFullYear(), month=shown.getMonth();
+  monthTitle.textContent=shown.toLocaleDateString(undefined,{month:"long",year:"numeric"});
+  calendarDays.innerHTML="";
+  const first=new Date(year,month,1), start=first.getDay(), count=new Date(year,month+1,0).getDate();
+  const prevCount=new Date(year,month,0).getDate();
+  const today=new Date(); today.setHours(0,0,0,0);
+  for(let i=0;i<42;i++){
+    let dayNum, date, outside=false;
+    if(i<start){dayNum=prevCount-start+i+1;date=new Date(year,month-1,dayNum);outside=true;}
+    else if(i>=start+count){dayNum=i-(start+count)+1;date=new Date(year,month+1,dayNum);outside=true;}
+    else{dayNum=i-start+1;date=new Date(year,month,dayNum);}
+    const key=[date.getFullYear(),String(date.getMonth()+1).padStart(2,"0"),String(date.getDate()).padStart(2,"0")].join("-");
+    const cell=document.createElement("div"); cell.className="day"+(outside?" outside":"");
+    if(date.getTime()===today.getTime())cell.classList.add("today");
+    cell.innerHTML=`<div class="day-num">${dayNum}</div>`;
+    events.filter(e=>e.date===key).forEach(e=>{
+      const tag=document.createElement("span");tag.className="event-dot "+(e.color||"");tag.textContent=e.title;cell.appendChild(tag);
+    });
+    calendarDays.appendChild(cell);
+  }
+  const future=events.slice()
+    .sort((a,b)=>a.date.localeCompare(b.date))
+    .filter(e=>e.date>=today.toISOString().slice(0,10) && e.color==="coral")
+    .slice(0,5);
+  upcomingEvents.innerHTML=future.length?"":'<div class="empty">No outings added yet. Check back soon for our next adventure!</div>';
+  future.forEach(e=>{
+    const d=new Date(e.date+"T12:00:00");
+    const row=document.createElement("div");row.className="event-row";
+    row.innerHTML=`<div class="event-date">${d.toLocaleDateString(undefined,{month:"short"}).toUpperCase()}<br><span style="font-size:18px">${d.getDate()}</span></div><div><strong>${escapeHtml(e.title)}</strong><small>${escapeHtml(e.time||"Time to be confirmed")}${e.place?" · "+escapeHtml(e.place):""}${e.note?"<br>"+escapeHtml(e.note):""}</small></div>`;
+    upcomingEvents.appendChild(row);
+  });
+
+  const ideas=events.slice()
+    .sort((a,b)=>a.date.localeCompare(b.date))
+    .filter(e=>e.date>=today.toISOString().slice(0,10) && e.color==="lavender");
+  potentialEvents.innerHTML=ideas.length?"":'<div class="empty">No suggested outings right now. Add lavender events to the calendar when you have ideas to consider.</div>';
+  ideas.forEach(e=>{
+    const d=new Date(e.date+"T12:00:00");
+    const row=document.createElement("div");row.className="event-row";
+    row.innerHTML=`<div class="event-date" style="background:#eeeafb">${d.toLocaleDateString(undefined,{month:"short"}).toUpperCase()}<br><span style="font-size:18px">${d.getDate()}</span></div><div><strong>${escapeHtml(e.title)}</strong><small>${escapeHtml(e.time||"Date/time tentative")}${e.place?" · "+escapeHtml(e.place):""}${e.note?"<br>"+escapeHtml(e.note):""}</small></div>`;
+    potentialEvents.appendChild(row);
+  });
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+document.getElementById("prev").addEventListener("click",()=>{shown.setMonth(shown.getMonth()-1);renderCalendar();});
+document.getElementById("next").addEventListener("click",()=>{shown.setMonth(shown.getMonth()+1);renderCalendar();});
+
+function renderIdeas(){
+  const grid=document.getElementById("ideasGrid");
+  grid.innerHTML="";
+  outingIdeas.forEach(idea=>{
+    const card=document.createElement("article");
+    card.className="idea-card";
+    card.innerHTML=`<div class="idea-icon" aria-hidden="true">${idea.icon}</div>
+      <span class="idea-tag">${escapeHtml(idea.tag)}</span>
+      <h3>${escapeHtml(idea.title)}</h3>
+      <p>${escapeHtml(idea.description)}</p>
+      <div class="idea-meta">${escapeHtml(idea.cost)}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+function renderPosts(){
+  const grid=document.getElementById("blogGrid");
+  if(!posts.length){grid.innerHTML='<div class="info-card" style="grid-column:1/-1"><h3>Our first adventure is waiting!</h3><p class="empty">After an outing, add a short story and a photo in the posts section of the code. Your photo journal will grow here over time.</p></div>';return;}
+  posts.forEach(p=>{
+    const card=document.createElement("article");card.className="blog-card";
+    const photo=p.image?`<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title||"Adventure photo")}">`:`<div class="blog-photo">Add a photo URL in the posts section</div>`;
+    card.innerHTML=`<div class="blog-photo">${photo}</div><div class="blog-copy"><time>${escapeHtml(p.date||"")}</time><h3>${escapeHtml(p.title||"A day together")}</h3><p>${escapeHtml(p.text||"")}</p></div>`;
+    grid.appendChild(card);
+  });
+}
+function setTab(name){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===name));
+  document.querySelectorAll("[data-tab]").forEach(a=>a.classList.toggle("active",a.dataset.tab===name));
+  location.hash=name;
+}
+document.querySelectorAll("[data-tab]").forEach(el=>el.addEventListener("click",e=>{e.preventDefault();setTab(el.dataset.tab);}));
+if(location.hash==="#adventures")setTab("adventures");
+renderCalendar();renderIdeas();renderPosts();
+</script>
+</body>
+</html>
