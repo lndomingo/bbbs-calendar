@@ -43,6 +43,7 @@ h2{font:500 30px Georgia,serif;margin:0}h3{font:500 21px Georgia,serif;margin:0 
 .event.coral{background:#fbe5ef;color:#874b69}.event.lavender{background:#eee9fb;color:#554b83}.event.range{background:#e9fbf5;color:#4fa083}
 .below{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:17px}
 .info-card{padding:19px;box-shadow:none}.event-row{display:flex;gap:12px;border-top:1px solid var(--line);padding:12px 0}
+.past-outings{border-top:1px solid var(--line);margin-top:18px;padding-top:16px}.past-outings h3{font-size:19px;margin-bottom:3px}
 .datebox {min-width: 76px;min-height: 55px;text-align: center;border-radius: 9px;padding: 7px 5px;font-size: 11px;line-height: 1.25;font-weight: 800;display: flex;justify-content: center;align-items: center;}
 .datebox-confirmed {background:#fbe5ef;color:#874b69;}
 .datebox-suggested {background:#eee9fb;color:#554b83;}
@@ -98,7 +99,14 @@ h2{font:500 30px Georgia,serif;margin:0}h3{font:500 21px Georgia,serif;margin:0 
   <div class="days" id="calendarDays"></div>
  </div>
  <div class="below">
-  <div class="info-card"><h3>Coming Up</h3><p class="sub">Confirmed outings</p><div id="upcomingEvents"></div></div>
+  <div class="info-card">
+    <h3>Coming Up</h3><p class="sub">Confirmed outings</p><div id="upcomingEvents"></div>
+    <div class="past-outings">
+     <h3>Past Outings</h3>
+     <p class="sub">A little look back at the fun we've had.</p>
+     <div id="pastEvents"></div>
+    </div>
+   </div>
   <div class="info-card">
    <h3>Ideas to Explore</h3><p class="sub">Suggested outings to follow up on</p><div id="suggestedEvents"></div>
    <div class="everyday-ideas">
@@ -109,7 +117,7 @@ h2{font:500 30px Georgia,serif;margin:0}h3{font:500 21px Georgia,serif;margin:0 
      <li><span>🛝</span><div><strong>Park picnic and play</strong><small>Pack a snack, play, and enjoy some fresh air.</small></div></li>
      <li><span>📚</span><div><strong>Library adventure</strong><small>Pick out books, read together, or join a free activity.</small></div></li>
      <li><span>🍊</span><div><strong>Farmers market stroll</strong><small>Explore the stalls and choose a little treat.</small></div></li>
-     <li><span>🍃</span><div><strong>Nature walk and treasure hunt</strong><small>Look for interesting leaves, flowers, and tiny discoveries.</small></div></li>
+     <li><span>🍃</span><div><strong>Nature walk and hike</strong><small>Walk through nature. Discover new areas of California.</small></div></li>
      <li><span>🎲</span><div><strong>Game and story afternoon</strong><small>Bring a favorite game or make up a story together.</small></div></li>
     </ul>
    </div>
@@ -150,6 +158,7 @@ const monthTitle=document.getElementById("monthTitle");
 const calendarDays=document.getElementById("calendarDays");
 const upcomingEvents=document.getElementById("upcomingEvents");
 const suggestedEvents=document.getElementById("suggestedEvents");
+const pastEvents=document.getElementById("pastEvents");
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function keyDate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
 function localToday(){return keyDate(new Date())}
@@ -180,15 +189,16 @@ function renderCalendar(){
 function renderLists(){
  const today=localToday();
  const confirmed=events.filter(e=>e.color==="coral"&&eventEnd(e)>=today).sort((a,b)=>a.date.localeCompare(b.date));
+ const past=events.filter(e=>e.color==="coral"&&eventEnd(e)<today).sort((a,b)=>b.date.localeCompare(a.date));
  const suggested=events.filter(e=>e.color==="lavender"&&eventEnd(e)>=today).sort((a,b)=>a.date.localeCompare(b.date));
- function rows(items){if(!items.length)return '<div class="empty">Nothing upcoming right now.</div>';return items.map(e=>{
+ function rows(items,emptyMessage="Nothing upcoming right now."){if(!items.length)return `<div class="empty">${emptyMessage}</div>`;return items.map(e=>{
   const boxDate=e.endDate?`${formatDate(e.date,{month:"short",day:"numeric"})}<br>–<br>${formatDate(e.endDate,{month:"short",day:"numeric"})}`:formatDate(e.date,{month:"short",day:"numeric"});
   const dateClass=e.endDate
    ?"datebox range-datebox datebox-range"
    :(e.color==="coral"?"datebox datebox-confirmed":"datebox datebox-suggested");
   return `<div class="event-row"><div class="${dateClass}">${boxDate}</div><div><strong>${esc(e.title)}</strong><small>${e.time?esc(e.time):""}${e.place?(e.time?" · ":"")+esc(e.place):""}${e.note?"<br>"+esc(e.note):""}</small></div></div>`;
  }).join("")}
- upcomingEvents.innerHTML=rows(confirmed);suggestedEvents.innerHTML=rows(suggested);
+ upcomingEvents.innerHTML=rows(confirmed);pastEvents.innerHTML=rows(past,"Your outings will appear here after they happen.");suggestedEvents.innerHTML=rows(suggested);
 }
 function renderPosts(){
  const grid=document.getElementById("blogGrid");
