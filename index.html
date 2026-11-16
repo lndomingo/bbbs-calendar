@@ -58,7 +58,8 @@ h2{font:500 30px Georgia,serif;margin:0}h3{font:500 21px Georgia,serif;margin:0 
 .memory-card{overflow:hidden;box-shadow:none}.memory-photo{height:210px;background:linear-gradient(135deg,#d8e8ff,#e7dafa 55%,#c9eeea);display:grid;place-items:center;color:#695c4c;text-align:center;padding:20px;font-size:13px}
 .memory-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .memory-copy{padding:18px}.memory-copy time{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:800}
-.memory-copy h3{margin:7px 0;font-size:21px}.memory-copy p{font-size:14px;color:var(--muted);margin:0}
+.memory-copy h3{margin:7px 0;font-size:21px}
+.memory-copy p{font-size:14px;color:var(--muted);margin:2;white-space:pre-line;}
 .journal-note{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px 20px;margin-bottom:17px;font-size:14px;color:var(--muted)}
 .footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
 @media(max-width:760px){.site{padding:16px 12px 40px}.hero{padding:25px 21px}.below{grid-template-columns:1fr}.blog-grid{grid-template-columns:1fr 1fr}.day{min-height:78px;padding:5px}.event{font-size:9px;padding:3px 3px}.weekdays,.days{gap:3px}}
@@ -115,7 +116,7 @@ h2{font:500 30px Georgia,serif;margin:0}h3{font:500 21px Georgia,serif;margin:0 
 
 <section id="adventures" class="panel">
  <div class="section-head"><div><h2>Our Adventures</h2><p class="sub">A little journal of the places we explore, things we make, and memories we collect.</p></div></div>
- <div class="journal-note">After an outing, add a photo and a few words below in the <strong>posts</strong> section of the website code. Over time, this will become a scrapbook of Ira and Larissa’s adventures.</div>
+ <div class="journal-note">After an outing, add a few words in the <strong>posts</strong> section of the website code. Photos are optional — memories without photos will appear as simple journal cards.</div>
  <div class="blog-grid" id="blogGrid"></div>
 </section>
 </main>
@@ -138,6 +139,7 @@ const posts = [
   // Add a memory after an outing. Upload the photo to GitHub (or HubSpot Files)
   // and paste its image URL below.
   // {date:"November 21, 2026",title:"Our first outing",text:"We made a Christmas ornament and had breakfast together!",image:"PASTE_IMAGE_URL_HERE"}
+  {date: "November 10, 2026",title: "Meeting Ira!",text: "On a Tuesday after work, I went to meet my potential little sister, Ira! I talked with your dad to learn about you. I could hear you and your brother playing in the other room while we hid in one of the isolated rooms.\nIt was time for us to meet. I was nervous but excited! I expected us to talk about our interests, but it was anything but that. We played with a dino twice your size and fidgeted with a pink toy cupcake.\nMy impression: You were so short and so full of life. Joy, and youth. I'd be so honored for the opportunity to watch you grow and learn more about this world. Hopefully I found my match!"}
 ];
 
 let shown=new Date();shown.setDate(1);
@@ -185,10 +187,10 @@ function renderLists(){
 }
 function renderPosts(){
  const grid=document.getElementById("blogGrid");
- if(!posts.length){grid.innerHTML='<div class="info-card" style="grid-column:1/-1"><h3>Our first adventure is waiting!</h3><p class="empty">After your first outing, add a photo and a short memory to the posts section in the website code. This space will grow into your shared scrapbook.</p></div>';return}
+ if(!posts.length){grid.innerHTML='<div class="info-card" style="grid-column:1/-1"><h3>Our first adventure is waiting!</h3><p class="empty">After your first outing, add a short memory to the posts section in the website code. Photos are optional!</p></div>';return}
  grid.innerHTML=posts.map(p=>{
-  const photo=p.image?`<img src="${esc(p.image)}" alt="${esc(p.title||"Adventure photo")}">`:`<div class="memory-photo">Add a photo URL in the posts section</div>`;
-  return `<article class="memory-card"><div class="memory-photo">${photo}</div><div class="memory-copy"><time>${esc(p.date||"")}</time><h3>${esc(p.title||"A day together")}</h3><p>${esc(p.text||"")}</p></div></article>`;
+  const photo=p.image?`<div class="memory-photo"><img src="${esc(p.image)}" alt="${esc(p.title||"Adventure photo")}"></div>`:"";
+  return `<article class="memory-card">${photo}<div class="memory-copy"><time>${esc(p.date||"")}</time><h3>${esc(p.title||"A day together")}</h3><p>${esc(p.text||"")}</p></div></article>`;
  }).join("");
 }
 document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===btn));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===btn.dataset.tab))}));
