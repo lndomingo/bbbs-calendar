@@ -43,7 +43,10 @@ h2{font:500 30px Georgia,serif;margin:0}h3{font:500 21px Georgia,serif;margin:0 
 .event.coral{background:#fbe5ef;color:#874b69}.event.lavender{background:#eee9fb;color:#554b83}.event.range{background:#e9fbf5;color:#4fa083}
 .below{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:17px}
 .info-card{padding:19px;box-shadow:none}.event-row{display:flex;gap:12px;border-top:1px solid var(--line);padding:12px 0}
-.datebox {min-width: 76px;min-height: 55px;text-align: center;background: #e6f0ff;border-radius: 9px;padding: 7px 5px;font-size: 11px;line-height: 1.25;font-weight: 800;color: #365b86;display: flex;justify-content: center;align-items: center;}
+.datebox {min-width: 76px;min-height: 55px;text-align: center;border-radius: 9px;padding: 7px 5px;font-size: 11px;line-height: 1.25;font-weight: 800;display: flex;justify-content: center;align-items: center;}
+.datebox-confirmed {background:#fbe5ef;color:#874b69;}
+.datebox-suggested {background:#eee9fb;color:#554b83;}
+.datebox-range {background:#e9fbf5;color:#4fa083;}
 .datebox.range-datebox {min-width: 76px;font-size: 10px;}
 .event-row strong{display:block;font-size:14px}.event-row small{display:block;color:var(--muted);font-size:12px;line-height:1.5;margin-top:3px}
 .empty{font-size:14px;color:var(--muted);padding:10px 0}
@@ -180,7 +183,9 @@ function renderLists(){
  const suggested=events.filter(e=>e.color==="lavender"&&eventEnd(e)>=today).sort((a,b)=>a.date.localeCompare(b.date));
  function rows(items){if(!items.length)return '<div class="empty">Nothing upcoming right now.</div>';return items.map(e=>{
   const boxDate=e.endDate?`${formatDate(e.date,{month:"short",day:"numeric"})}<br>–<br>${formatDate(e.endDate,{month:"short",day:"numeric"})}`:formatDate(e.date,{month:"short",day:"numeric"});
-  const dateClass=e.endDate?"datebox range-datebox":"datebox";
+  const dateClass=e.endDate
+   ?"datebox range-datebox datebox-range"
+   :(e.color==="coral"?"datebox datebox-confirmed":"datebox datebox-suggested");
   return `<div class="event-row"><div class="${dateClass}">${boxDate}</div><div><strong>${esc(e.title)}</strong><small>${e.time?esc(e.time):""}${e.place?(e.time?" · ":"")+esc(e.place):""}${e.note?"<br>"+esc(e.note):""}</small></div></div>`;
  }).join("")}
  upcomingEvents.innerHTML=rows(confirmed);suggestedEvents.innerHTML=rows(suggested);
