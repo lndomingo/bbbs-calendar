@@ -40,15 +40,39 @@ h2{font:500 30px Georgia,serif;margin:0}h3{font:500 21px Georgia,serif;margin:0 
 .day{min-height:100px;border:1px solid #f0ece5;border-radius:11px;padding:7px;background:#fff;min-width:0}
 .day.outside{background:#fcfaf6;color:#b7b4ad}.day.today{border:2px solid #d77da6}
 .day-num{font-size:12px;font-weight:800}.event{display:block;margin-top:5px;padding:4px 5px;border-radius:6px;font-size:10px;line-height:1.25;overflow-wrap:anywhere}
-.event.coral{background:#fbe5ef;color:#874b69}.event.lavender{background:#eee9fb;color:#554b83}.event.range{background:#e9fbf5;color:#4fa083}
+.event.coral{background:#fbe5ef;color:#874b69}.event.lavender{background:#eee9fb;color:#554b83}.event.range{background:#e9fbf5;color:#295c4a}
 .below{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:17px}
 .info-card{padding:19px;box-shadow:none}.event-row{display:flex;gap:12px;border-top:1px solid var(--line);padding:12px 0}
 .past-outings{border-top:1px solid var(--line);margin-top:18px;padding-top:16px}.past-outings h3{font-size:19px;margin-bottom:3px}
 .datebox {min-width: 76px;min-height: 55px;text-align: center;border-radius: 9px;padding: 7px 5px;font-size: 11px;line-height: 1.25;font-weight: 800;display: flex;justify-content: center;align-items: center;}
 .datebox-confirmed {background:#fbe5ef;color:#874b69;}
 .datebox-suggested {background:#eee9fb;color:#554b83;}
-.datebox-range {background:#e9fbf5;color:#4fa083;}
+.datebox-range {background:#e9fbf5;color:#317960;}
 .datebox.range-datebox {min-width: 76px;font-size: 10px;}
+
+.event-dialog[hidden]{display:none}
+.event-dialog{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:18px}
+.event-dialog-backdrop{position:absolute;inset:0;background:rgba(28,43,66,.48)}
+.event-dialog-card{position:relative;width:min(100%,460px);max-height:85vh;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:25px;box-shadow:0 18px 60px rgba(20,35,60,.24)}
+.event-dialog-close{position:absolute;right:14px;top:10px;border:0;background:#f2f5fb;color:var(--ink);border-radius:50%;width:34px;height:34px;font-size:23px;line-height:1;cursor:pointer}
+.event-dialog-card h2{font-size:27px;margin:7px 38px 5px 0}
+.event-dialog-date{margin:0 0 16px;color:var(--muted);font-size:14px;font-weight:700}
+.event-dialog-details{border-top:1px solid var(--line)}
+.event-detail-row{padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+.event-detail-row strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px}
+.event-detail-row{overflow-wrap:anywhere;white-space:normal;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.5}
+.event-detail-row strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px}
+.event-hours-list{display:grid;gap:7px;margin-top:7px}
+.event-hours-item{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:8px 10px;background:#f6f7fc;border-radius:9px;font-size:13px}
+.event-hours-item span:first-child{font-weight:700;color:var(--ink)}
+.event-hours-item span:last-child{text-align:right;color:#536b91;font-weight:650;white-space:nowrap}
+.event-dialog-note{background:#f5f7fc;border-radius:11px;padding:11px 13px;color:var(--muted);font-size:12px;line-height:1.5;margin:15px 0 0}
+@media(max-width:420px){.event-hours-item{align-items:flex-start;flex-direction:column;gap:1px}.event-hours-item span:last-child{text-align:left}}
+.event[role="button"]{cursor:pointer}
+.event[role="button"]:focus-visible{outline:2px solid #7565a8;outline-offset:2px}
+.idea-button{width:100%;text-align:left;font:inherit;color:inherit;background:transparent;border:0;cursor:pointer;border-radius:10px;padding:12px 8px;margin-left:-8px;margin-right:-8px;transition:background .15s,opacity .15s}
+.idea-button:hover,.idea-button:focus-visible{background:#f5f2fc;outline:2px solid #b9a9e8;outline-offset:1px}
+.event.is-highlighted{font-weight:900;outline:2px solid currentColor;outline-offset:1px;box-shadow:0 2px 8px rgba(38,59,89,.18);position:relative;z-index:1;transform:scale(1.02)}
 .event-row strong{display:block;font-size:14px}.event-row small{display:block;color:var(--muted);font-size:12px;line-height:1.5;margin-top:3px}
 .empty{font-size:14px;color:var(--muted);padding:10px 0}
 .everyday-ideas{border-top:1px solid var(--line);margin-top:15px;padding-top:16px}
@@ -59,15 +83,15 @@ h2{font:500 30px Georgia,serif;margin:0}h3{font:500 21px Georgia,serif;margin:0 
 .everyday-ideas strong{display:block;font-size:13px;color:var(--ink)}
 .everyday-ideas small{display:block;font-size:12px;line-height:1.45;color:var(--muted);margin-top:1px}
 .blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
-.memory-card{overflow:hidden;box-shadow:none}.memory-photo{height:210px;background:linear-gradient(135deg,#d8e8ff,#e7dafa 55%,#c9eeea);display:grid;place-items:center;color:#695c4c;text-align:center;padding:20px;font-size:13px}
-.memory-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.memory-card{overflow:hidden;box-shadow:none}.memory-photo{min-height:120px;height:auto;background:linear-gradient(135deg,#d8e8ff,#e7dafa 55%,#c9eeea);display:flex;align-items:center;justify-content:center;color:#695c4c;text-align:center;padding:0;font-size:13px;overflow:hidden}
+.memory-photo img{width:100%;height:auto;max-height:440px;object-fit:contain;display:block}
 .memory-copy{padding:18px}.memory-copy time{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:800}
 .memory-copy h3{margin:7px 0;font-size:21px}
 .memory-copy p{font-size:14px;color:var(--muted);margin:2;white-space:pre-line;}
 .journal-note{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px 20px;margin-bottom:17px;font-size:14px;color:var(--muted)}
 .footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
 @media(max-width:760px){.site{padding:16px 12px 40px}.hero{padding:25px 21px}.below{grid-template-columns:1fr}.blog-grid{grid-template-columns:1fr 1fr}.day{min-height:78px;padding:5px}.event{font-size:9px;padding:3px 3px}.weekdays,.days{gap:3px}}
-@media(max-width:520px){.tabs{gap:7px}.tab{flex:1;padding:11px 10px;font-size:14px}.filters{align-items:flex-start;flex-direction:column}.calendar-card{padding:9px}.weekdays,.days{gap:2px}.weekdays div{font-size:9px;padding:5px 0}.day{min-height:64px;padding:4px 2px}.day-num{font-size:10px}.event{font-size:8px;padding:3px 2px;line-height:1.15}.cal-title{font-size:20px}.cal-actions button{min-width:32px;height:34px;padding:0 7px}.blog-grid{grid-template-columns:1fr}.memory-photo{height:220px}}
+@media(max-width:520px){.tabs{gap:7px}.tab{flex:1;padding:11px 10px;font-size:14px}.filters{align-items:flex-start;flex-direction:column}.calendar-card{padding:9px}.weekdays,.days{gap:2px}.weekdays div{font-size:9px;padding:5px 0}.day{min-height:64px;padding:4px 2px}.day-num{font-size:10px}.event{font-size:8px;padding:3px 2px;line-height:1.15}.cal-title{font-size:20px}.cal-actions button{min-width:32px;height:34px;padding:0 7px}.blog-grid{grid-template-columns:1fr}.memory-photo{min-height:100px}}
 </style>
 </head>
 <body>
@@ -76,7 +100,7 @@ h2{font:500 30px Georgia,serif;margin:0}h3{font:500 21px Georgia,serif;margin:0 
 <section class="hero">
  <div class="eyebrow">Ira + Larissa • Big Sister Adventures</div>
  <h1>Little adventures,<br>Big memories!</h1>
- <p>A happy little place to see what’s coming up and remember the fun things Ira and Larissa do together.</p>
+ <p>A nice place to see what’s coming up and remember the fun things Ira and Larissa do together.</p>
 </section>
 <div class="tabs">
  <button class="tab active" data-tab="calendar">🗓️ Calendar</button>
@@ -131,29 +155,45 @@ h2{font:500 30px Georgia,serif;margin:0}h3{font:500 21px Georgia,serif;margin:0 
  <div class="blog-grid" id="blogGrid"></div>
 </section>
 </main>
-<div class="footer">Made with sunshine for Ira &amp; Larissa. ☀️</div>
+
+<div id="eventDialog" class="event-dialog" hidden>
+ <div class="event-dialog-backdrop" data-close-dialog></div>
+ <section class="event-dialog-card" role="dialog" aria-modal="true" aria-labelledby="eventDialogTitle">
+  <button type="button" class="event-dialog-close" aria-label="Close event details" data-close-dialog>×</button>
+  <div class="eyebrow">Event details</div>
+  <h2 id="eventDialogTitle"></h2>
+  <p class="event-dialog-date" id="eventDialogDate"></p>
+  <div class="event-dialog-details" id="eventDialogDetails"></div>
+  <p class="event-dialog-note" id="eventDialogNote" hidden>Hours may vary by day of the week. Please confirm the schedule for your chosen date before heading out.</p>
+ </section>
+</div>
+
+<div class="footer">Made with code for Ira &amp; Larissa. ☀️</div>
 </div>
 
 <script>
 
 const events = [
 //confirmed
-{date:"2026-11-21",title:"Home Depot Kids Workshop — Christmas Car Ornament",time:"9:00 AM",place:"Home Depot (Brea)",note:"Activities and crafts, then breakfast!",color:"coral"},
-{date:"2026-12-05",title:"Holiday Market",time:"1:00–5:00 PM",place:"TBR Books (Claremont? confirm)",note:"Shop small. Read cozy. Make it a bookish holiday.",color:"lavender"},
-{date:"2026-12-12",title:"BBBS Holiday Match Party",time:"11:00 AM–2:00 PM",place:"Dave & Buster’s (Irvine)",note:"Food, games, prizes, crafts, and holiday fun.",color:"lavender"},
-{date:"2026-12-13",title:"BBBS Holiday Match Party",time:"11:00 AM–2:00 PM",place:"Dave & Buster’s (Ontario)",note:"Food, games, prizes, crafts, and holiday fun.",color:"lavender"},
-{date:"2026-11-27",endDate:"2026-12-27",title:"Hikari: Festival of Lights",time:"5:00–9:00 PM; last entry 7:30 PM",place:"Tanaka Farms (Irvine)",note:"Seasonal lights and farm activities. Check operating dates before choosing a night.",cost:"Paid admission and parking",color:"lavender"},
-{date:"2026-12-18",endDate:"2026-12-30",title:"Capistrano Lights",time:"Select dates; check schedule",place:"Mission San Juan Capistrano",note:"Holiday lights and seasonal activities. Check operating dates before choosing a night.",cost:"Paid admission",color:"lavender"}
+{date:"2026-11-21",title:"Home Depot Kids Workshop — Christmas Car Ornament",time:"9AM",place:"Home Depot (Brea)",note:"Activities and crafts, then breakfast!",color:"coral"},
+{date:"2026-12-05",title:"Holiday Market",time:"1 – 5PM",place:"TBR Books (Claremont)",note:"Shop small. Read cozy. Make it a bookish holiday.",color:"lavender"},
+{date:"2026-12-12",title:"BBBS Holiday Match Party",time:"11AM – 2PM",place:"Dave & Buster’s (Irvine)",note:"Food, games, prizes, crafts, and holiday fun.",color:"lavender"},
+{date:"2026-12-13",title:"BBBS Holiday Match Party",time:"11AM – 2PM",place:"Dave & Buster’s (Ontario)",note:"Food, games, prizes, crafts, and holiday fun.",color:"lavender"},
+{date:"2026-11-27",endDate:"2026-12-27",title:"Hikari: Festival of Lights",time:"5:00–9:00 PM; last admission 7:30 PM",place:"Tanaka Farms (Irvine)",note:"Open Wednesday–Sunday, plus Dec 21–23. Closed Dec 24–25. Last admission 7:30 PM.",cost:"Paid admission and parking",color:"lavender",activeWeekdays:[0,3,4,5,6],extraDates:["2026-12-21","2026-12-22","2026-12-23"],excludedDates:["2026-12-24","2026-12-25"]},
+{date:"2026-12-18",endDate:"2026-12-30",title:"Capistrano Lights",time:"10:00 AM–7:00 PM",place:"Mission San Juan Capistrano",note:"Open on select dates: Dec 18–23, 26–27, and 29–30. Closed Dec 24, 25, and 28. Holiday programming includes Dickens carolers (3:30–6:30 PM), the digital light show (5:05 PM), and the tree-lighting program (6:15 PM). Santa visits through Dec 23 (3:30–6:30 PM).",cost:"Paid admission",color:"lavender",excludedDates:["2026-12-24","2026-12-25","2026-12-28"]},
+{date:"2026-11-15",endDate:"2027-01-03",title:"Old World Christmas Market",time:"Weekday: 4:00–9:00 PM · Weekend: 12:00–10:00 PM",timesByWeekday:{0:"12:00–10:00 PM",1:"4:00–9:00 PM",2:"4:00–9:00 PM",3:"4:00–9:00 PM",4:"4:00–9:00 PM",5:"4:00–9:00 PM",6:"12:00–10:00 PM"},place:"Old World Village (Huntington Beach)",note:"A European-style Christmas market with shopping, music, and festive treats.",cost:"Free · Pay for shopping and food",color:"lavender"}
 ];
 
 const posts = [
   // Add a memory after an outing. Upload the photo to GitHub (or HubSpot Files)
   // and paste its image URL below.
   // {date:"November 21, 2026",title:"Our first outing",text:"We made a Christmas ornament and had breakfast together!",image:"PASTE_IMAGE_URL_HERE"}
-  {date: "November 10, 2026",title: "Meeting Ira!",text: "On a Tuesday after work, I went to meet my potential little sister, Ira! I talked with your dad to learn about you. I could hear you and your brother playing in the other room while we hid in one of the isolated rooms.\nIt was time for us to meet. I was nervous but excited! I expected us to talk about our interests, but it was anything but that. We played with a dino twice your size and fidgeted with a pink toy cupcake.\nMy impression: You were so short and so full of life. Joy, and youth. I'd be so honored for the opportunity to watch you grow and learn more about this world. Hopefully I found my match!"}
+  {date: "November 21, 2026",title: "First Outing: Home Depot and Farmer's Market",text: "When I picked up up, you and your entire family were waiting for me outside. You jumped in the booster seat and we headed to Home Depot for the free Kids Workshop.\nYou're very talkative. You showed me all of your previous workshop pins and were SO excited for this craft. We made a Christmas Car Ornament. You mixed the red, white, and green to make an all purple car. MESSY but fun!\nNext, we headed to the farmer's market for breakfast. Sampled, sampled, and popsicle. You were very adimit on getting your popsicle. We sampled lots of fruit (strawberries, blueberries, apples) and yogurt. It was a beautiful day and great way to spend our first outing.\nI think my biggest struggle was saying no (haha). Overall, I'm so happy with the match and excited about our next outings.",image:"/Users/larissadomingo/Documents/Ira/IMG_7408.jpeg"},
+  {date: "November 10, 2026",title: "Meeting Ira!",text: "On a Tuesday after work, I went to meet my potential little sister, Ira! I talked with your dad to learn about you. I could hear you and your brother playing in the other room while your dad and I hid in one of the isolated rooms.\nIt was time for us to meet. I was nervous but excited! I expected us to talk about our interests, but it was anything but that. We played with a dino twice your size and fidgeted with a pink toy cupcake.\nMy impression: You were so short and so full of life. Joy, and youth. I'd be so honored for the opportunity to watch you grow and learn more about this world. Hopefully I found my match!"}
 ];
 
 let shown=new Date();shown.setDate(1);
+let selectedEventIndex=null;
 const monthTitle=document.getElementById("monthTitle");
 const calendarDays=document.getElementById("calendarDays");
 const upcomingEvents=document.getElementById("upcomingEvents");
@@ -180,8 +220,27 @@ function renderCalendar(){
   events.filter(e=>{
    const enabled=(e.color==="coral"&&document.getElementById("showConfirmed").checked)||(e.color==="lavender"&&document.getElementById("showSuggested").checked);
    const range=!!e.endDate;
-   return enabled&&(!range||document.getElementById("showRanges").checked)&&e.date<=key&&eventEnd(e)>=key;
-  }).forEach(e=>{const tag=document.createElement("span");tag.className="event "+e.color+(e.endDate?" range":"");tag.textContent=e.title;tag.title=e.endDate?`${e.title}: ${formatDate(e.date)} – ${formatDate(e.endDate)}`:e.title;cell.appendChild(tag)});
+   if(!enabled||(range&&!document.getElementById("showRanges").checked)) return false;
+   if(e.date>key||eventEnd(e)<key) return false;
+   // Multi-week events can specify their actual operating days.
+   if(e.excludedDates?.includes(key)) return false;
+   if(e.activeWeekdays||e.extraDates){
+    const weekday=dateObj(key).getDay();
+    return !!e.extraDates?.includes(key)||!!e.activeWeekdays?.includes(weekday);
+   }
+   return true;
+  }).forEach(e=>{
+   const eventIndex=events.indexOf(e),tag=document.createElement("span");
+   tag.className="event "+e.color+(e.endDate?" range":"");
+   if(selectedEventIndex!==null && e.title===events[selectedEventIndex]?.title) tag.classList.add("is-highlighted");
+   tag.textContent=e.title;
+   tag.title="View details for "+e.title;
+   tag.setAttribute("role","button");
+   tag.setAttribute("tabindex","0");
+   tag.dataset.eventIndex=eventIndex;
+   tag.dataset.eventDate=key;
+   cell.appendChild(tag);
+  });
   calendarDays.appendChild(cell);
  }
  renderLists();
@@ -196,9 +255,10 @@ function renderLists(){
   const dateClass=e.endDate
    ?"datebox range-datebox datebox-range"
    :(e.color==="coral"?"datebox datebox-confirmed":"datebox datebox-suggested");
-  return `<div class="event-row"><div class="${dateClass}">${boxDate}</div><div><strong>${esc(e.title)}</strong><small>${e.time?esc(e.time):""}${e.place?(e.time?" · ":"")+esc(e.place):""}${e.note?"<br>"+esc(e.note):""}</small></div></div>`;
+  const eventIndex=events.indexOf(e);
+  return `<button type="button" class="event-row idea-button" data-event-index="${eventIndex}" aria-label="View details for ${esc(e.title)}"><div class="${dateClass}">${boxDate}</div><div><strong>${esc(e.title)}</strong><small>${e.place?esc(e.place):""}${e.note?"<br>"+esc(e.note):""}</small></div></button>`;
  }).join("")}
- upcomingEvents.innerHTML=rows(confirmed);pastEvents.innerHTML=rows(past,"Your outings will appear here after they happen.");suggestedEvents.innerHTML=rows(suggested);
+ upcomingEvents.innerHTML=rows(confirmed);pastEvents.innerHTML=rows(past,"Your outings will appear here after they happen.");suggestedEvents.innerHTML=rows(suggested,"Nothing upcoming right now.");
 }
 function renderPosts(){
  const grid=document.getElementById("blogGrid");
@@ -210,9 +270,84 @@ function renderPosts(){
 }
 document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===btn));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===btn.dataset.tab))}));
 ["showConfirmed","showSuggested","showRanges"].forEach(id=>document.getElementById(id).addEventListener("change",renderCalendar));
+[upcomingEvents,pastEvents,suggestedEvents].forEach(list=>{
+ list.addEventListener("click",event=>{
+  const button=event.target.closest(".idea-button");
+  if(!button) return;
+  const index=Number(button.dataset.eventIndex);
+  const item=events[index];
+  if(item) showEventDetails(index,item.date,true);
+ });
+});
 document.getElementById("today").addEventListener("click",()=>{shown=new Date();shown.setDate(1);renderCalendar()});
 document.getElementById("prev").addEventListener("click",()=>{shown.setMonth(shown.getMonth()-1);renderCalendar()});
 document.getElementById("next").addEventListener("click",()=>{shown.setMonth(shown.getMonth()+1);renderCalendar()});
+
+const eventDialog=document.getElementById("eventDialog");
+const eventDialogTitle=document.getElementById("eventDialogTitle");
+const eventDialogDate=document.getElementById("eventDialogDate");
+const eventDialogDetails=document.getElementById("eventDialogDetails");
+// selectedDate is the exact calendar cell clicked; weekday-specific times can be supplied as timesByWeekday: {0:"...", 1:"...", ...}.
+function showEventDetails(index,selectedDate,fromEventList=false){
+ const e=events[index];
+ if(!e) return;
+ eventDialogTitle.textContent=e.title;
+ eventDialogDate.textContent=fromEventList&&e.endDate
+  ? `${formatDate(e.date,{month:"long",day:"numeric",year:"numeric"})} – ${formatDate(e.endDate,{month:"long",day:"numeric",year:"numeric"})}`
+  : dateObj(selectedDate).toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+ document.getElementById("eventDialogNote").hidden=!e.endDate;
+ const rows=[];
+ if(e.time){
+  if(fromEventList){
+   rows.push(["Time",e.time]);
+  }else{
+   const selectedWeekday=dateObj(selectedDate).getDay();
+   const weekdayTime=e.timesByWeekday?.[selectedWeekday];
+   rows.push(["Time",weekdayTime||e.time]);
+  }
+ }
+ if(fromEventList&&Array.isArray(e.hoursByDay)&&e.hoursByDay.length){
+  rows.push(["Hours by day",e.hoursByDay.map(([day,hours])=>`${day}: ${hours}`).join("\n")]);
+ }
+ if(e.place) rows.push(["Location",e.place]);
+ if(e.note) rows.push(["Details",e.note]);
+ if(e.cost) rows.push(["Cost",e.cost]);
+ if(e.endDate) rows.push(["Event dates",`${formatDate(e.date)} – ${formatDate(e.endDate)}`]);
+
+ eventDialogDetails.innerHTML=rows.map(([label,value])=>`<div class="event-detail-row"><strong>${esc(label)}</strong>${label==="Hours by day"?`<div class="event-hours-list">${value.split("\\n").map(line=>`<div>${esc(line)}</div>`).join("")}</div>`:esc(value)}</div>`).join("");
+ eventDialog.hidden=false;
+ document.body.style.overflow="hidden";
+ const closeButton=eventDialog.querySelector(".event-dialog-close");
+ closeButton.focus();
+}
+function closeEventDetails(){
+ eventDialog.hidden=true;
+ document.body.style.overflow="";
+}
+function highlightMatchingCalendarEvents(tag){
+ const index=Number(tag.dataset.eventIndex);
+ if(!events[index]) return;
+ selectedEventIndex=selectedEventIndex===index?null:index;
+ renderCalendar();
+}
+calendarDays.addEventListener("click",event=>{
+ const tag=event.target.closest(".event[data-event-index]");
+ if(!tag) return;
+ highlightMatchingCalendarEvents(tag);
+});
+calendarDays.addEventListener("keydown",event=>{
+ const tag=event.target.closest(".event[data-event-index]");
+ if(!tag||!(event.key==="Enter"||event.key===" ")) return;
+ event.preventDefault();
+ highlightMatchingCalendarEvents(tag);
+});
+eventDialog.addEventListener("click",event=>{
+ if(event.target.closest("[data-close-dialog]")) closeEventDetails();
+});
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape"&&!eventDialog.hidden) closeEventDetails();
+});
+
 renderCalendar();renderPosts();
 </script>
 </body>
